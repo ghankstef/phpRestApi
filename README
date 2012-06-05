@@ -1,1 +1,2 @@
-A PHP OO REST CLient - a work in progess.
+A PHP OO REST CLient - a work in progess.  Currently only Get and json are supported. 
+Code is liberally commented and index.php has an example implementation. 

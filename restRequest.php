@@ -19,7 +19,7 @@ abstract class restReqeust {
   protected $response;
   protected $response_info;
   protected $ch; // curl resource
-
+  private static $instance;
 
   abstract public function send_request();
   abstract public function get_request_info();
@@ -65,22 +65,25 @@ abstract class restReqeust {
   }
   
   public static function getInstance($type){
-    switch ($type){
-      case 'get':
-        return new Get();
-      break;
-      case 'post':
-        return new Post();
-      break;
-      case 'put':
-        return new Put();
-      break;
-      case 'delete':
-        return new Delete();
-      break;
-    }  
-  }  
-
+    // Singleton pattern object generation method
+    if ( empty(self::$instance) ) {
+      switch ($type){
+        case 'get':
+          self::$instance = new Get();
+        break;
+        case 'post':
+          self::$instance = new Post();
+        break;
+        case 'put':
+          self::$instance = new Put();
+        break;
+        case 'delete':
+          self::$instance = new Delete();
+        break;
+      }  
+    }
+    return self::$instance;
+  }
 }
 
 /**
@@ -106,7 +109,7 @@ class Get extends restReqeust{
     catch (Exception $e){
       throw $e;
     }
-    curl_close($thisch);
+    curl_close($this->ch);
   }
 
   function get_request_info(){

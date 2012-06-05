@@ -8,7 +8,7 @@
 
 abstract class restResponseParser{
   protected $payload;
-
+  private static $instance;
 
   function __construct($payload) {
     $this->payload = $payload;
@@ -17,13 +17,21 @@ abstract class restResponseParser{
   abstract function parse();
   
   
-  
+  /**
+   * @function getInstance - singleton style object generation
+   * @param type $content_type - http content type  such as application/json
+   * @param type $payload
+   * @return type 
+   */
   public static function getInstance($content_type, $payload){
-    switch ($content_type) {
-      case 'application/json':
-         return new jsonParser($payload);
-        break;
+    if (empty( self::$instance)){ 
+      switch ($content_type) {
+        case 'application/json':
+           self::$instance =  new jsonParser($payload);
+          break;
+      }
     }
+    return self::$instance;
   }
 }
 

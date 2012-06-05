@@ -15,6 +15,7 @@ abstract class restResponse {
   protected $payload;
   protected $http_status;
   protected $content_type;
+  private static $instance;
   
   /**
    *
@@ -38,14 +39,17 @@ abstract class restResponse {
    * @return a subclass of restResponse
    */
   public static function getInstance($content_type, $payload, $info){
+    // Singleton style object generation
     $application_type = restResponse::stripContentTypeString($content_type);
-    switch ($application_type[0]){
-      case 'application/json':
-        return new jsonResponse($payload, $info);
-        break;
-   }
-  }
-  
+    if ( empty( self::$instance)) {
+      switch ($application_type[0]){
+        case 'application/json':
+          self::$instance =  new jsonResponse($payload, $info);
+          break;
+        }
+      }
+      return self::$instance;
+    }
   
   public static function stripContentTypeString($string){
     return preg_split("/\;/", $string);
