@@ -64,8 +64,12 @@ abstract class restReqeust {
       return $this->response_status;
   }
   
+  /**
+   * @function getInstance: Singleton pattern object generation method
+   * @param type $type
+   * @return $instance - a restRequest subclass object , ie ... Get, Put, Delete or Post
+   */
   public static function getInstance($type){
-    // Singleton pattern object generation method
     if ( empty(self::$instance) ) {
       switch ($type){
         case 'get':
